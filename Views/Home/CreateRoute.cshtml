@@ -1,0 +1,516 @@
+﻿@{
+
+
+}
+@{
+    ViewData["Title"] = "Home Page";
+}
+<!--
+https://localhost:7065/Home/CreateRoute
+-->
+<head>
+    <style>
+        #Attractions > * {
+            display: flex;
+        }
+
+        #Attractions > * > span {
+            width: 90%;
+        }
+
+        #Attractions > * > a {
+            margin-left: 5px;
+        }
+
+        #Attractions {
+            font-weight: bold;
+        }
+
+
+        #search {
+            display: flex;
+            flex-direction: column;
+            flex-grow: 1;
+            padding-top: 1%;
+            overflow-y: scroll;
+            padding-right: 2vw;
+        }
+
+        #pager {
+            margin-inline: auto;
+            margin-block: 10px;
+        }
+
+        #search_result {
+            flex-grow: 1;
+        }
+
+            #search_result > p {
+                padding-left: 1%;
+            }
+
+            #search_result > div {
+                padding: 1%;
+                aspect-ratio: 3 / 1;
+                position: relative;
+                z-index: 1;
+            }
+
+                #search_result > div > div {
+                    background-color: white;
+                    border: solid 0.1rem gainsboro;
+                    border-radius: 1rem;
+                    padding: 1%;
+                    width: 100%;
+                    height: 100%;
+                    display: flex;
+                }
+
+                #search_result > div > span {
+                    top: 50%;
+                    left: 50%;
+                    transform: translate(-50%, -50%);
+                    z-index: -1;
+                    position: absolute;
+                }
+
+        .search_img {
+            width: 35%;
+            overflow: hidden;
+            display: flex;
+        }
+
+            .search_img > img {
+                height: 90%;
+                width: auto;
+                margin: auto;
+            }
+
+        .search_info {
+            width: 65%;
+            padding: 1%;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+        }
+
+            .search_info > h3 {
+                width: 100%;
+                margin-bottom: 2%;
+                max-height: 70%;
+                word-break: break-all;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                display: -webkit-box;
+                -webkit-line-clamp: 3;
+                -webkit-box-orient: vertical;
+            }
+
+            .search_info > h5 {
+                margin: 0;
+                color: dimgray;
+                overflow: hidden;
+                white-space: nowrap;
+                text-overflow: ellipsis;
+            }
+
+            .search_info > button {
+                position: absolute;
+                bottom: 1%;
+                right: 1%;
+                height: 22%;
+                padding: 0 1rem;
+            }
+
+        #sResult > *{
+            display: flex;
+        }
+
+            #sResult > * > .search_img > img {
+                width: 100%;
+                height: auto;
+            }
+        
+        td {
+            vertical-align: middle;
+        }
+
+        form > label {
+            margin-top: 1.5rem;
+        }
+    </style>
+</head>
+<body>
+    <form>
+        <label for="input-title" class="form-label">タイトル</label>
+        <div class="input-group">
+            <input type="text" class="form-control" name="input-title" id="input-title" placeholder="例：郡山観光してみた（笑）">
+        </div>
+        <label for="attr-input" class="form-label">見どころ</label>
+        <div id="Attractions">
+            風車<br />
+            ヒマワリ
+        </div>
+        <div class="input-group">
+            <input type="text" class="form-control" name="attr-input" id="attr-input">
+            <button class="btn btn-outline-secondary" type="button" id="button-attr-add">追加</button>
+        </div>
+        <label for="s-input" class="form-label">観光地</label>
+        <table class="table">
+            <tbody>
+                <tr>
+                    <th>10:50</th>
+                    <td>スタート - 郡山駅</td>
+                </tr>
+                <tr>
+                    <th>60分</th>
+                    <td>車で移動</td>
+                </tr>
+                <tr>
+                    <th>11:50<br />　|<br />13:00</th>
+                    <td>布引高原</td>
+                </tr>
+                <tr>
+                    <th>56分</th>
+                    <td>車で移動</td>
+                </tr>
+                <tr>
+                    <th>13:56<br />　|<br />14:00</th>
+                    <td>開成山公園</td>
+                </tr>
+                <tr>
+                    <th>9分</th>
+                    <td>車で移動</td>
+                </tr>
+                <tr>
+                    <th>14:09</th>
+                    <td>ゴール  - 郡山駅</td>
+                </tr>
+            </tbody>
+        </table>
+        <div id="sResult">
+
+        </div>
+        <div class="input-group">
+            <button type="button" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#searchModal">観光地追加</button>
+            <button type="button" class="btn btn-secondary ms-auto" data-bs-toggle="modal" data-bs-target="#modalRoute">移動追加</button>
+        </div>
+        <div class="input-group mt-5" style="margin-bottom: 100px;">
+            <button type="button" onclick="submitEvent()" class="btn btn-primary btn-lg mx-auto">投稿</button>
+        </div>
+    </form>
+    <div class="modal" id="searchModal">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">観光地検索</h4>
+                    <button type="button" class="btn-close" id="modal-close-btn" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label for="searchQuery" class="form-label">検索キーワード:</label>
+                        <input type="text" class="form-control" id="searchQuery" name="searchQuery">
+                    </div>
+                    <button type="button" class="btn btn-primary" onclick="bookSearch(1)">検索</button>
+                </div>
+                <div id="search">
+                    <div id="search_result">
+                    </div>
+                    <nav id="pager">
+                        <ul class="pagination">
+                            <li class="page-item" id="page_0" style="display: none;">
+                                <a class="page-link" href="javascript:void(0)" onclick="searchPageListener(0)">1 ..</a>
+                            </li>
+                            <li class="page-item" id="page_1" style="display: none;">
+                                <a class="page-link" href="javascript:void(0)"
+                                   onclick="searchPageListener(1)">1</a>
+                            </li>
+                            <li class="page-item" id="page_2" style="display: none;">
+                                <a class="page-link" href="javascript:void(0)"
+                                   onclick="searchPageListener(2)">2</a>
+                            </li>
+                            <li class="page-item" id="page_3" style="display: none;">
+                                <a class="page-link" href="javascript:void(0)"
+                                   onclick="searchPageListener(3)">3</a>
+                            </li>
+                            <li class="page-item" id="page_4" style="display: none;">
+                                <a class="page-link" href="javascript:void(0)" onclick="searchPageListener(4)">
+                                    ..
+                                    <span><span>
+                                </a>
+                            </li>
+                        </ul>
+                    </nav>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal" id="modalRoute">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">ルート追加</h4>
+                    <button type="button" class="btn-close" id="modal-close-btn" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label for="" class="form-label"></label>
+                        <input type="text" class="form-control" id="searchQuery" name="searchQuery">
+                    </div>
+                    <button type="button" class="btn btn-primary" onclick="bookSearch(1)">検索</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        let attrIndex = 0;
+
+        function createPostData(data) {
+            let postData = document.createElement("input");
+            postData.type = "hidden";
+            postData.value = data;
+            return postData;
+        }
+
+        document.getElementById("button-attr-add").addEventListener("click", function () {
+            let inputText = document.getElementById("attr-input");
+            let div = document.createElement("div");
+            div.classList.add("attr_" + ++attrIndex);
+            let postData = createPostData(inputText.value);
+            postData.classList.add("attr_p_data");
+            let span = document.createElement("span");
+            span.innerText = inputText.value;
+            let delAnker = document.createElement("a");
+            const index = attrIndex;
+            delAnker.addEventListener("click", function () {
+                document.getElementsByClassName("attr_" + index)[0].remove();
+            });
+            delAnker.innerText = "×";
+            delAnker.href = "javascript:void(0)";
+            div.append(postData, span, delAnker);
+            inputText.value = "";
+            document.getElementById("Attractions").append(div);
+        });
+
+        function testData() {
+            return {
+                "count": 2,
+                "limit": 5,
+                "books":[
+                    {
+                        "id": 0,
+                        "name": "公園1",
+                        "link": "https://growthseed.jp/wp-content/uploads/2016/12/peach-1.jpg"
+                    },
+                    {
+                        "id": 1,
+                        "name": "公園2",
+                        "link": "https://www.trans.co.jp/column/knowledge/ai_image_generator/img/ai_image_generator_01.jpg"
+                    },
+                    {
+                        "id": 2,
+                        "name": "公園3",
+                        "link": "https://user0514.cdnw.net/shared/img/thumb/aig-ai221017175-xl_TP_V.jpg"
+                    }
+                ]
+            }
+        }
+
+        async function bookSearch(page) {
+            /*
+            let jsonObj = null;
+            let promise = new Promise(function (end) {
+                const xmlhttp = new XMLHttpRequest();
+                xmlhttp.onreadystatechange = function () {
+                    if (xmlhttp.readyState == 4) {
+                        let success = xmlhttp.status == 200;
+                        if (success) {
+                            try {
+                                jsonObj = JSON.parse(xmlhttp.responseText);
+                            } catch (e) {
+                                success = false;
+                            }
+                        }
+                        if (!success) {
+                            alert('検索に失敗しました。\n時間をおいて再度実行してください。');
+                        }
+                        end();
+                    }
+                }
+                xmlhttp.open("GET", "./booksearch.php?" + new URLSearchParams({ k: encodeURIComponent(keyword), page: page, sf: sDorp }).toString());
+                xmlhttp.send();
+            });
+            await promise;
+            */
+            
+            let jsonObj = testData();
+            const search_div = document.getElementById('search_result');
+            const new_search_div = search_div.cloneNode(false);
+            const search_div_parent = document.getElementById('search');
+            search_div.remove();
+            search_div_parent.prepend(new_search_div);
+            if (jsonObj == null) {
+                return;
+            }
+            let hitNum = document.createElement('p');
+            hitNum.innerText = 'と検索\n' + jsonObj.count + '件ヒットしました';
+            initPager(jsonObj.count, page, jsonObj.limit);
+            new_search_div.appendChild(hitNum);
+            let i = 0;
+            jsonObj.books.forEach(book => {
+                new_search_div.appendChild(create_search_book(book.id, i, book.name, book.link));
+                ++i;
+            });
+            search_div_parent.scrollTop = 0;
+        }
+
+        function initPager(count, m_page, limit) {
+            let pagemax = Math.floor(count / limit);
+            if (count % limit != 0) {
+                ++pagemax;
+            }
+
+            let maxflag = false;
+            let minflag = false;
+            if (m_page == 1) {
+                for (let id = 1; id <= 3; ++id) {
+                    const page = document.getElementById('page_' + id);
+                    if (id <= pagemax) {
+                        page.querySelector('a').innerText = id;
+                        page.style.display = 'inline';
+                    } else {
+                        page.style.display = 'none';
+                    }
+                    if (id == 1) {
+                        page.classList.add('active');
+                    } else {
+                        page.classList.remove('active');
+                    }
+                }
+                maxflag = 3 < pagemax;
+            } else if (m_page == pagemax) {
+                for (let id = 3, pageNum = m_page; id > 0; --id, --pageNum) {
+                    const page = document.getElementById('page_' + id);
+                    if (pageNum > 0) {
+                        page.querySelector('a').innerText = pageNum;
+                        page.style.display = 'inline';
+                    } else {
+                        page.style.display = 'none';
+                    }
+                    if (id == 3) {
+                        page.classList.add('active');
+                    } else {
+                        page.classList.remove('active');
+                    }
+                }
+                minflag = m_page > 3;
+            } else {
+                const page1 = document.getElementById('page_1');
+                page1.querySelector('a').innerText = m_page - 1;
+                page1.style.display = 'inline';
+                page1.classList.remove('active');
+                const page2 = document.getElementById('page_2');
+                page2.querySelector('a').innerText = m_page;
+                page2.style.display = 'inline';
+                page2.classList.add('active');
+                const page3 = document.getElementById('page_3');
+                page3.querySelector('a').innerText = m_page + 1;
+                page3.style.display = 'inline';
+                page3.classList.remove('active');
+                maxflag = m_page + 1 < pagemax;
+                minflag = m_page - 1 > 1;
+            }
+
+            const page4 = document.getElementById('page_4');
+            document.getElementById('page_0').style.display = minflag ? 'inline' : 'none';
+            if (maxflag) {
+                page4.style.display = 'inline';
+                page4.querySelector('span').innerText = pagemax;
+            } else {
+                page4.style.display = 'none';
+            }
+        }
+
+        function searchPageListener(i) {
+            switch (i) {
+                case 0:
+                    bookSearch(1);
+                    break;
+                case 1:
+                case 2:
+                case 3:
+                    bookSearch(Number(document.getElementById('page_' + i).querySelector('a').innerText));
+                    break;
+                case 4:
+                    bookSearch(Number(document.getElementById('page_4').querySelector('span').innerText));
+                    break;
+                default:
+                    return;
+                    break;
+            }
+        }
+
+        function create_search_book(id, i, name, link) {
+            let searchImg = document.createElement('div');
+            searchImg.classList.add('search_img');
+            let img = document.createElement('img');
+            img.src = link;
+            searchImg.appendChild(img);
+
+            let infoDiv = document.createElement('div');
+            infoDiv.classList.add('search_info');
+
+            let h3 = document.createElement('h3');
+            h3.innerText = name;
+            let button = document.createElement('button');
+            button.classList.add('btn', 'btn-primary');
+            button.type = ' button';
+            button.innerText = '登録';
+            button.addEventListener('click', bookRegisterListener(id, i));
+            let inputId = document.createElement('input');
+            inputId.type = 'hidden';
+            inputId.value = id;
+            infoDiv.append(h3, button, inputId)
+
+            let div = document.createElement('div');
+            div.id = 'search_' + i;
+            div.append(searchImg, infoDiv);
+
+            let reg = document.createElement('span');
+            reg.innerText = '登録しました';
+
+            let parent = document.createElement('div');
+            parent.append(div, reg);
+
+            return parent;
+        }
+
+        function bookRegisterListener(id, i) {
+            return function (e) {
+                e.preventDefault();
+                let div = document.getElementById('search_' + i);
+                div.getElementsByTagName("button")[0].remove();
+                document.getElementById("sResult").append(div);
+                /*
+                const div = document.getElementById('search_' + i);
+                const bookImgAnker = document.getElementById('favorite_book_img');
+                bookImgAnker.classList.remove('favorite_default_book');
+                let img = bookImgAnker.querySelector('img');
+                if (img == null) {
+                    img = document.createElement('img');
+                    bookImgAnker.append(img);
+                }
+                img.src = div.querySelector('.search_img').querySelector('img').src;
+                document.getElementById('favorite_book_title').innerText = div.querySelector('h3').innerText;
+                document.querySelector('[name="favorite_book_id"]').value = div.querySelector('input').value;
+                */
+                document.getElementById("modal-close-btn").click();
+            }
+        }
+
+        function submitEvent() {
+            alert('投稿しました');
+            location.href = "Index";
+        }
+    </script>
+</body>

@@ -1,0 +1,307 @@
+﻿@{
+}
+<head>
+    <style>
+        #profile-image {
+          width: 116px;
+          height: 116px;
+          border-radius: 50%;
+          object-fit: cover;
+          margin: 0 auto;
+        }
+
+        .change-icon {
+          width: 116px;
+          background-color: rgba(0, 0, 0, 0.5);
+          padding-top: 5px;
+          padding-bottom: 5px;
+        }
+
+        .Mypage {
+          margin: auto;
+          text-align: center;
+          margin-top: 125px;
+        }
+
+        h3 {
+          margin-top: 20px;
+          text-align: center;
+        }
+
+        .myPage_comment {
+          margin-top: 50px;
+          margin-bottom: 20px;
+          text-align: left;
+        }
+
+        .myPage_genre,
+        .myPage_book {
+          margin-top: 80px;
+        }
+
+        .myPage_book>div>img {
+          width: 150px;
+          height: auto;
+        }
+
+        .myPage_count {
+          margin-bottom: 30px;
+          text-align: center;
+        }
+
+        .a {
+          text-align: center;
+        }
+
+        .content-pane {
+          margin: 0 auto;
+          text-align: center;
+        }
+
+        .myPage_comment {
+          text-align: center;
+        }
+
+        .myPage_genre {
+          text-align: center;
+        }
+
+        #book_lists {
+          display: flex;
+          flex-wrap: wrap;
+          justify-content: space-around;
+        }
+
+        /*タブメニュー----------------------------------------------------------------------------------*/
+        /*---------------------------------------------------------------------------------------------*/
+        /*---------------------------------------------------------------------------------------------*/
+        /* Custom styles for the tabs */
+        .custom-tabs {
+          list-style: none;
+          display: flex;
+          justify-content: center;
+          margin: 0;
+          padding: 0;
+        }
+
+        .custom-tabs li {
+          margin: 0;
+          padding: 0;
+        }
+
+        .custom-tabs li a {
+          display: block;
+          padding: 10px 40px;
+          text-align: center;
+          text-decoration: none;
+          background-color: #f8f8f8;
+          border: 1px solid #ddd;
+          border-radius: 5px 5px 0 0;
+          color: black;
+        }
+
+        .custom-tabs li.active a {
+          background-color: white;
+          border-bottom: none;
+          color: #c0c0c0; /* 任意のカラーコード */ /*開いているタブのメニューの色*/
+        }
+
+        .tab-content {
+          margin-top: -1px;
+          border: 1px solid #ddd;
+          border-top: none;
+          padding: 50px 20px;
+          border-bottom-left-radius: 5px;
+          border-bottom-right-radius: 5px;
+          background: #ffffff;
+        }
+
+        .content-pane {
+          display: none;
+        }
+
+        .content-pane.is-active {
+          display: block;
+          animation: fade-in 0.5s ease-in-out;
+        }
+
+        @@keyframes fade-in {
+          0% {
+            opacity: 0;
+            transform: translateY(10px);
+          }
+          100% {
+            opacity: 1;
+            transform: translateY(0);
+          }
+        }
+
+
+        .box {
+            width: 320px;
+            height: 226px;
+            border-radius: 20px;
+            background-size: cover;
+            margin-bottom: 25px;
+            box-sizing: border-box;
+            display: flex;
+            text-align: left;
+        }
+
+
+        .text-container {
+            margin-top: auto;
+            padding-bottom: 10px;
+            width: 100%;
+            background: linear-gradient(to top, rgba(0, 0, 0, 0.5), transparent);
+            color: #ffffff;
+            padding-left: 20px;
+            border-radius: 20px;
+        }
+
+        .profile-icon > img {
+            max-width: 20px;
+            height: auto;
+            border-radius: 50%;
+            margin-right: 15px;
+        }
+
+        .profile {
+            margin-top: 10px;
+            display: flex;
+            align-items: center;
+        }
+
+
+
+            .profile > h5, .text-container > h5{
+                font-size: 20px;
+            }
+
+        .text-container > h3 {
+            text-align: left;
+        }
+    </style>
+</head>
+<body>
+    <div>
+        <div class="Mypage col-5">
+            <div>
+                <img id="profile-image" src="https://img.oishi-kenko.com/images/healthcare_recipes/w=768,h=768,c=true/11921.jpg?2018-05-28%2016:40:04%20+0900">
+            </div>
+
+            <h3>はるりん</h3>
+            <!----
+            <P class = "a">このしたに投稿したリストがあれば表示</P>
+
+            <P class = "a">なければなんか「投稿はありません」みたいなことを表示する</P>
+            --->
+        </div>
+        <!---この下に投稿したリストを表示するコードを書く---->
+
+        <div id="wrapper">
+
+            <div class="container">
+                <ul class="custom-tabs" style="margin-top: 30px">
+                    <li class="active"><a href="#tab1">プロフィール</a></li>
+                    <li><a href="#tab2">投稿</a></li>
+                </ul>
+
+                <div class="tab-content">
+                    <div id="tab1" class="content-pane is-active col-8">
+                        <div class="myPage_comment">
+                            <p>
+                                郡山市の美しい観光名所、風光明媚な自然と歴史的な魅力が調和し、訪れる人を心から魅了します。四季折々の風景が楽しめ、古き良き日本の趣が漂う穏やかな場所です。
+                            </p>
+                        </div>
+                    </div>
+                    <div id="tab2" class="content-pane">
+                        <div class="myPage_count">
+                            <h5>投稿数 2 件</h5>
+                        </div>
+                        <div id="book_lists">
+                            <div class="box" style="background-image: url('https://onsen.jal.co.jp/fukushima/sp75/p/1_6.jpg');">
+                                <div class="text-container">
+                                    <h5>2023-1-23</h5>
+                                    <h3>
+                                        温泉と歴史巡り
+                                    </h3>
+                                    <div class="profile">
+                                        <div class="profile-icon">
+                                            <img src="https://img.oishi-kenko.com/images/healthcare_recipes/w=768,h=768,c=true/11921.jpg?2018-05-28%2016:40:04%20+0900">
+                                        </div>
+                                        <h5>はるりん</h5>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="box" style="background-image: url('https://bt.imgix.net/museum/708/sub/1547693142236_620f617a93454a2e002d7dc030851fb0.jpg?auto=format&fm=jpg&w=1472&h=828&fit=clip&rect=0,111,1531,861&v=13');">
+                                <div class="text-container">
+                                    <h5>2023-4-13</h5>
+                                    <h3>
+                                        自然と文化の調和
+                                    </h3>
+                                    <div class="profile">
+                                        <div class="profile-icon">
+                                            <img src="https://img.oishi-kenko.com/images/healthcare_recipes/w=768,h=768,c=true/11921.jpg?2018-05-28%2016:40:04%20+0900">
+                                        </div>
+                                        <h5>はるりん</h5>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        "use strict";
+
+        const Tabs = {
+            init() {
+                this.$tabs = document.querySelectorAll(".custom-tabs a");
+                this.bindEvents();
+                this.checkHash();
+            },
+
+            bindEvents() {
+                for (const tab of this.$tabs) {
+                    tab.addEventListener("click", this.tabClicked.bind(this));
+                }
+            },
+
+            checkHash() {
+                if (window.location.hash) {
+                    this.toggleTab(window.location.hash);
+                }
+            },
+
+            tabClicked(e) {
+                e.preventDefault();
+
+                // クリックされたタブの親要素のliを取得
+                const clickedTabLi = e.target.closest("li");
+
+                // すべてのタブの背景色を初期化
+                this.resetTabBackgrounds();
+
+                // クリックされたタブと対応するコンテンツの背景色を変更
+                clickedTabLi.classList.add("active");
+                const tabContentId = e.target.getAttribute("href");
+                document.querySelector(tabContentId).classList.add("is-active");
+            },
+
+            resetTabBackgrounds() {
+                const tabLis = document.querySelectorAll(".custom-tabs li");
+                for (const tabLi of tabLis) {
+                    tabLi.classList.remove("active");
+                    const tabContentId = tabLi.querySelector("a").getAttribute("href");
+                    document.querySelector(tabContentId).classList.remove("is-active");
+                }
+            },
+        };
+
+        Tabs.init();
+    </script>
+</body>
